@@ -8,7 +8,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
-const config = require("./server/config/key");
+const config = require("./config/key");
 
 // const mongoose = require("mongoose");
 // mongoose
@@ -17,7 +17,7 @@ const config = require("./server/config/key");
 //   .catch(err => console.error(err));
 
 //Connect to the MongoDB
-mongoose.connect(config.mongoURI,
+const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,
     useCreateIndex: true, useFindAndModify: false
@@ -36,8 +36,8 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cookieParser());
 
 //Importing Routes both API and View to handle request
-app.use('/api/users', require('./server/routes/users'));
-app.use('/api/favorite', require('./server/routes/favorite'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/favorite', require('./routes/favorite'));
 
 app.use('/uploads', express.static('uploads'));
 
@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
 
   // Save in index.html for all page routes    html or routing and naviagtion
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
   });
 }
 
